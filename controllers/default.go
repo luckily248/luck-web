@@ -9,12 +9,10 @@ type MainController struct {
 }
 
 func (c *MainController) Post() {
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
+	c.Data["text"] = "beego.me"
 	c.TplNames = "index.tpl"
 }
 func (c *MainController) Get() {
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "astaxie@gmail.com"
+	c.Data["text"] = "beego.me"
 	c.TplNames = "index.tpl"
 }
