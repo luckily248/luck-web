@@ -96,7 +96,6 @@ func getContent(c *ResController) {
 		}
 
 	}
-	r.Close()
 	//log.Printf("%s", buf)
 	return
 
