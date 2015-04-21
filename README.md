@@ -1,3 +1,7 @@
 # luck-web
 demo
-实现登录功能
+* RESTful
+* scrypt加密处理
+* mongoDB应用
+* 文件系统
+* 
