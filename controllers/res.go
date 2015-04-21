@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"fmt"
-	//	"fmt"
 	"github.com/astaxie/beego"
 	"log"
 	. "luck-web/handlers"

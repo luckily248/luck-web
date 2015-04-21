@@ -85,6 +85,7 @@ func (h *Ftphandler) GetLength(src string) (length uint64, err error) {
 
 }
 func (h *Ftphandler) GetHash(src string) (hash string, err error) {
+	hash = ""
 	c, err := initSession()
 	if err != nil {
 		return
@@ -96,12 +97,14 @@ func (h *Ftphandler) GetHash(src string) (hash string, err error) {
 		return
 	}
 	if isexist {
-		r, err := c.Retr(srchash)
-		if err != nil {
+		r, erro := c.Retr(srchash)
+		if erro != nil {
+			err = erro
 			return
 		}
-		buf, err := ioutil.ReadAll(r)
-		if err != nil {
+		buf, erro := ioutil.ReadAll(r)
+		if erro != nil {
+			err = erro
 			return
 		}
 		hash = string(buf)
@@ -110,39 +113,45 @@ func (h *Ftphandler) GetHash(src string) (hash string, err error) {
 		var mutex sync.Mutex
 		mutex.Lock()
 		defer mutex.Unlock()
-		isexist, err := h.IsExist(srchash)
-		if err != nil {
+		isexist, erro := h.IsExist(srchash)
+		if erro != nil {
+			err = erro
 			return
 		}
 		if isexist {
-			r, err := c.Retr(srchash)
-			if err != nil {
+			r, erro := c.Retr(srchash)
+			if erro != nil {
+				err = erro
 				return
 			}
-			buf, err := ioutil.ReadAll(r)
-			if err != nil {
+			buf, erro := ioutil.ReadAll(r)
+			if erro != nil {
+				err = erro
 				return
 			}
 			hash = string(buf)
 			return
 
 		} else {
-			isfileExist, err := h.IsExist(src)
-			if err != nil || isfileExist == false {
-				if err == nil {
+			isfileExist, erro := h.IsExist(src)
+			if erro != nil || isfileExist == false {
+				if erro == nil {
 					err = errors.New("file not exist")
+				} else {
+					err = erro
 				}
 				return
 			}
 			sha1h := sha1.New()
-			r, err := h.GetContent(src)
-			if err != nil {
+			r, erro := h.GetContent(src)
+			if erro != nil {
+				err = erro
 				return
 			}
 			io.Copy(sha1h, r)
 			hash = fmt.Sprintf("%x", sha1h.Sum(nil))
 			//fmt.Printf("sha1 %s", sha1s)
-			hashr := strings.NewReader(sha1s)
+			hashr := strings.NewReader(hash)
 			err = h.SetContent(srchash, hashr)
 			if err != nil {
 				return
